@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Audio/Video Transcription App</title>
+  <link rel="stylesheet" href="./styles.min.css">
+</head>
+<body class="app-container">
+  <div class="container mx-auto p-8">
+    <h1 class="app-title text-4xl font-bold mb-8">Audio/Video Transcription App</h1>
+    <div class="mb-8">
+      <label for="fileInput" class="label-text block mb-2 font-semibold">Select Audio/Video File</label>
+      <input type="file" id="fileInput" accept="audio/*,video/*" class="input-file w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <div class="mb-8">
+      <button id="selectOutputDirBtn" class="button-primary px-6 py-2 font-semibold text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">Select Output Directory</button>
+      <span id="outputDirDisplay" class="ml-4"></span>
+    </div>
+    <div class="mb-8">
+      <button id="transcribeBtn" class="button-secondary px-6 py-2 font-semibold text-white rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">Transcribe</button>
+      <button id="stopBtn" class="button-secondary px-6 py-2 font-semibold text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ml-4" disabled>Stop</button>
+    </div>
+    <p id="status" class="text-lg mb-4"></p>
+    <div class="console-output p-4 rounded-md">
+      <pre id="consoleOutput" class="overflow-auto h-64"></pre>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

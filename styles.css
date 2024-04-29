@@ -1,0 +1,41 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Custom styles */
+.app-container {
+  background-color: #F3F4F6;
+}
+
+.app-title {
+  color: #1F2937;
+}
+
+.label-text {
+  color: #4B5563;
+}
+
+.input-file {
+  border-color: #D1D5DB;
+}
+
+.button-primary {
+  background-color: #3B82F6;
+}
+
+.button-primary:hover {
+  background-color: #2563EB;
+}
+
+.button-secondary {
+  background-color: #10B981;
+}
+
+.button-secondary:hover {
+  background-color: #059669;
+}
+
+.console-output {
+  background-color: #1F2937;
+  color: #F9FAFB;
+}
