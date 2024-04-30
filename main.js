@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, screen } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const Store = require('electron-store');
@@ -19,6 +19,10 @@ function createWindow() {
   });
 
   mainWindow.loadFile('index.html');
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.maximize();
+  });
 }
 
 app.whenReady().then(createWindow);
