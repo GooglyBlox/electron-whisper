@@ -15,7 +15,8 @@
   color: #4B5563;
 }
 
-.input-file {
+.input-file,
+.select-input {
   border-color: #D1D5DB;
 }
 
@@ -38,4 +39,26 @@
 .console-output {
   background-color: #1F2937;
   color: #F9FAFB;
+}
+
+.checkbox-input {
+  border-color: #D1D5DB;
+}
+
+.checkbox-input:checked {
+  background-color: #3B82F6;
+  border-color: #3B82F6;
+}
+
+.toggle-checkbox {
+  transition: all 0.3s ease-in-out;
+}
+
+.toggle-checkbox:checked {
+  right: 0;
+  border-color: #3B82F6;
+}
+
+.toggle-checkbox:checked + .toggle-label {
+  background-color: #3B82F6;
 }

@@ -6,6 +6,7 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
+    "build:css": "postcss styles.css -o styles.min.css",
     "dist": "electron-builder --dir"
   },
   "build": {

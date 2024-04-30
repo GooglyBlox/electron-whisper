@@ -16,6 +16,46 @@
       <span id="outputDirDisplay" class="ml-4"></span>
     </div>
     <div class="mb-8">
+      <label for="modelSizeSelect" class="label-text block mb-2 font-semibold">Model Size</label>
+      <select id="modelSizeSelect" class="select-input w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="base">Base</option>
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+      </select>
+    </div>
+    <div class="mb-8">
+      <label for="languageSelect" class="label-text block mb-2 font-semibold">Language</label>
+      <select id="languageSelect" class="select-input w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="auto">Auto Detection</option>
+        <option value="en">English</option>
+        <option value="es">Spanish</option>
+        <option value="fr">French</option>
+        <!-- Add more language options -->
+      </select>
+    </div>
+    <div class="mb-8">
+      <label for="taskSelect" class="label-text block mb-2 font-semibold">Task</label>
+      <select id="taskSelect" class="select-input w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="transcribe">Transcribe</option>
+        <option value="translate">Translate</option>
+      </select>
+    </div>
+    <div class="mb-8">
+      <label for="deviceSelect" class="label-text block mb-2 font-semibold">Device</label>
+      <select id="deviceSelect" class="select-input w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="cpu">CPU</option>
+        <option value="cuda">GPU (CUDA)</option>
+      </select>
+    </div>
+    <div class="mb-8">
+      <label for="addSubtitlesCheckbox" class="label-text block mb-2 font-semibold">Add Subtitles</label>
+      <div class="relative inline-block w-10 mr-2 align-middle select-none">
+        <input type="checkbox" id="addSubtitlesCheckbox" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+        <label for="addSubtitlesCheckbox" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+      </div>
+    </div>
+    <div class="mb-8">
       <button id="transcribeBtn" class="button-secondary px-6 py-2 font-semibold text-white rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">Transcribe</button>
       <button id="stopBtn" class="button-secondary px-6 py-2 font-semibold text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 ml-4" disabled>Stop</button>
     </div>

@@ -7,6 +7,11 @@ const transcribeBtn = document.getElementById('transcribeBtn');
 const stopBtn = document.getElementById('stopBtn');
 const status = document.getElementById('status');
 const consoleOutput = document.getElementById('consoleOutput');
+const modelSizeSelect = document.getElementById('modelSizeSelect');
+const languageSelect = document.getElementById('languageSelect');
+const taskSelect = document.getElementById('taskSelect');
+const deviceSelect = document.getElementById('deviceSelect');
+const addSubtitlesCheckbox = document.getElementById('addSubtitlesCheckbox');
 
 let outputDir = '';
 
@@ -24,7 +29,16 @@ transcribeBtn.addEventListener('click', () => {
   if (filePath && outputDir) {
     status.textContent = 'Transcribing...';
     consoleOutput.textContent = '';
-    ipcRenderer.send('transcribe-file', filePath);
+
+    const options = {
+      modelSize: modelSizeSelect.value,
+      language: languageSelect.value,
+      task: taskSelect.value,
+      device: deviceSelect.value,
+      addSubtitles: addSubtitlesCheckbox.checked,
+    };
+
+    ipcRenderer.send('transcribe-file', filePath, options);
     transcribeBtn.disabled = true;
     stopBtn.disabled = false;
   }
@@ -38,24 +52,23 @@ stopBtn.addEventListener('click', () => {
 });
 
 ipcRenderer.on('transcription-progress', (event, message) => {
-    consoleOutput.textContent += message;
-    consoleOutput.scrollTop = consoleOutput.scrollHeight;
-  });
-  
-  ipcRenderer.on('transcription-complete', (event, success, outputPath) => {
-    if (success) {
-      status.textContent = `Transcription complete. Output saved to: ${outputPath}`;
-    } else {
-      status.textContent = 'Transcription failed';
-    }
-    transcribeBtn.disabled = false;
-    stopBtn.disabled = true;
-  });
-  
+  consoleOutput.textContent += message;
+  consoleOutput.scrollTop = consoleOutput.scrollHeight;
+});
+
+ipcRenderer.on('transcription-complete', (event, success, outputPath) => {
+  if (success) {
+    status.textContent = `Transcription complete. Output saved to: ${outputPath}`;
+  } else {
+    status.textContent = 'Transcription failed';
+  }
+  transcribeBtn.disabled = false;
+  stopBtn.disabled = true;
+});
 
 ipcRenderer.on('transcription-error', (event, message) => {
   status.textContent = message;
 });
 
 // Load saved output directory on app start
-ipcRenderer.send('get-output-directory');
+ipcRenderer.send('get-output-directory'); 
