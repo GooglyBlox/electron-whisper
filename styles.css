@@ -1,64 +1,52 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
 /* Custom styles */
-.app-container {
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.input-file {
+  border: 2px dashed #E5E7EB;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.input-file:hover {
+  border-color: #6366F1;
+}
+
+#selectedFiles {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+#consoleOutput {
+  font-family: 'Courier New', Courier, monospace;
   background-color: #F3F4F6;
+  border-radius: 0.375rem;
 }
 
-.app-title {
-  color: #1F2937;
+/* Smooth transitions */
+button, select, input[type="checkbox"] {
+  transition: all 0.3s ease;
 }
 
-.label-text {
-  color: #4B5563;
+/* Custom scrollbar for Webkit browsers */
+#selectedFiles::-webkit-scrollbar, #consoleOutput::-webkit-scrollbar {
+  width: 6px;
 }
 
-.input-file,
-.select-input {
-  border-color: #D1D5DB;
+#selectedFiles::-webkit-scrollbar-track, #consoleOutput::-webkit-scrollbar-track {
+  background: #F3F4F6;
 }
 
-.button-primary {
-  background-color: #3B82F6;
+#selectedFiles::-webkit-scrollbar-thumb, #consoleOutput::-webkit-scrollbar-thumb {
+  background-color: #D1D5DB;
+  border-radius: 20px;
 }
 
-.button-primary:hover {
-  background-color: #2563EB;
-}
-
-.button-secondary {
-  background-color: #10B981;
-}
-
-.button-secondary:hover {
-  background-color: #059669;
-}
-
-.console-output {
-  background-color: #1F2937;
-  color: #F9FAFB;
-}
-
-.checkbox-input {
-  border-color: #D1D5DB;
-}
-
-.checkbox-input:checked {
-  background-color: #3B82F6;
-  border-color: #3B82F6;
-}
-
-.toggle-checkbox {
-  transition: all 0.3s ease-in-out;
-}
-
-.toggle-checkbox:checked {
-  right: 0;
-  border-color: #3B82F6;
-}
-
-.toggle-checkbox:checked + .toggle-label {
-  background-color: #3B82F6;
+/* Ensure consistent button width */
+#transcribeBtn, #stopBtn {
+  min-width: 100px;
 }
