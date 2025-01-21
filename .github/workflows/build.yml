@@ -9,6 +9,7 @@ jobs:
   build:
     permissions:
       contents: write
+
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -17,13 +18,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+        env:
+          YOUTUBE_DL_SKIP_DOWNLOAD: "true"
 
       - name: Build
         run: npm run build
