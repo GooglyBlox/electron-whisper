@@ -33,6 +33,8 @@ jobs:
           YOUTUBE_DL_SKIP_DOWNLOAD: "true"
 
       - name: Build
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npm run build
 
       - name: Upload artifacts
