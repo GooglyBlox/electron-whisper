@@ -1,6 +1,7 @@
 node_modules
 package-lock.json
 dist-electron
+dist_electron
 dist
 /resources
 .txt
