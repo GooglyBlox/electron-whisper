@@ -80,7 +80,7 @@ function registerWhisperHandlers(ipcMain) {
       console.log('Audio loaded, starting transcription...')
       event.sender.send("progress", "Starting transcription...")
       const result = await transcriber(float32Audio, {
-        language: options.language !== "auto" ? options.language : undefined,
+        language: options.language,
         task: options.task,
         chunk_length_s: 30,
         stride_length_s: 5,

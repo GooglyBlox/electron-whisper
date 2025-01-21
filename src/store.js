@@ -6,7 +6,7 @@ export const useStore = create(
     (set) => ({
       settings: {
         modelSize: "base",
-        language: "auto",
+        language: "en",
         task: "transcribe",
         device: "cpu",
         addSubtitles: false,

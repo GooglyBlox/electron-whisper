@@ -1,51 +1,73 @@
-const ytdl = require("ytdl-core")
-const path = require("path")
-const fs = require("fs")
-const { app, dialog } = require("electron")
+const path = require("path");
+const fs = require("fs");
+const { app, dialog } = require("electron");
+const youtubedl = require("youtube-dl-exec");
 
 function registerYoutubeHandlers(ipcMain) {
   ipcMain.handle("download-youtube", async (_event, url) => {
     try {
-      const info = await ytdl.getInfo(url)
-      const videoId = info.videoDetails.videoId
-      const tempDir = path.join(app.getPath("temp"), "transcriber-downloads")
-      
+      const tempDir = path.join(app.getPath("temp"), "transcriber-downloads");
       if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir, { recursive: true })
+        fs.mkdirSync(tempDir, { recursive: true });
       }
 
-      const outputPath = path.join(tempDir, `${videoId}.mp4`)
-      const writeStream = fs.createWriteStream(outputPath)
+      const fileName = `${Date.now()}_download.m4a`;
+      const outputPath = path.join(tempDir, fileName);
 
-      return new Promise((resolve, reject) => {
-        ytdl(url, {
-          quality: "highestaudio",
-          filter: "audioonly"
-        })
-          .on("progress", (_, downloaded, total) => {
-            const percent = (downloaded / total) * 100
-            _event.sender.send("progress", `Downloading: ${percent.toFixed(2)}%`)
-          })
-          .pipe(writeStream)
-          .on("finish", () => resolve(outputPath))
-          .on("error", reject)
-      })
+      const finalPath = await downloadWithYtDlp(_event, url, outputPath);
+      return finalPath;
     } catch (error) {
-      console.error("Download error:", error)
-      throw error
+      console.error("Download error:", error);
+      throw error;
     }
-  })
+  });
 
   ipcMain.handle("select-directory", async () => {
     const result = await dialog.showOpenDialog({
-      properties: ["openDirectory"]
-    })
-
+      properties: ["openDirectory"],
+    });
     if (!result.canceled) {
-      return result.filePaths[0]
+      return result.filePaths[0];
     }
-    return null
-  })
+    return null;
+  });
 }
 
-module.exports = { registerYoutubeHandlers }
+function downloadWithYtDlp(_event, url, outputPath) {
+  return new Promise((resolve, reject) => {
+    const subprocess = youtubedl.exec(
+      url,
+      {
+        format: "bestaudio", 
+        output: outputPath,
+      },
+      {}
+    );
+
+    subprocess.stdout.on("data", (data) => {
+      const line = data.toString();
+      const match = line.match(/\[download\]\s+([\d.]+)%/);
+      if (match) {
+        _event.sender.send("progress", `Downloading: ${parseFloat(match[1]).toFixed(1)}%`);
+      }
+    });
+
+    subprocess.stderr.on("data", (err) => {
+      console.error(err.toString());
+    });
+
+    subprocess.on("close", (code) => {
+      if (code === 0) {
+        resolve(outputPath);
+      } else {
+        reject(new Error(`yt-dlp exited with code ${code}`));
+      }
+    });
+
+    subprocess.on("error", (err) => {
+      reject(err);
+    });
+  });
+}
+
+module.exports = { registerYoutubeHandlers };
