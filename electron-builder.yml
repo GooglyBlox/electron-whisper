@@ -1,0 +1,28 @@
+appId: com.googlyblox.transcriber
+productName: Transcriber App
+directories:
+  buildResources: build
+  output: dist_electron
+files:
+  - dist/**/*
+  - dist-electron/**/*
+  - resources/**/*
+  - "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}"
+  - "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}"
+extraResources:
+  - from: resources
+    to: resources
+    filter:
+      - "**/*"
+win:
+  target: nsis
+  icon: build/icon.ico
+mac:
+  target: dmg
+  icon: build/icon.icns
+linux:
+  target: AppImage
+  icon: build/icon.png
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
