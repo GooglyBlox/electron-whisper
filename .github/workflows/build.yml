@@ -42,7 +42,8 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: dist-${{ matrix.os }}
-          path: dist_electron/**
+          path: |
+            dist_electron/**/*
 
   release:
     permissions:
@@ -57,7 +58,7 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v3
         with:
-          path: artifacts
+          path: dist_electron
       
       - name: Generate Changelog
         id: changelog
@@ -76,7 +77,7 @@ jobs:
         with:
           draft: false
           prerelease: false
-          files: artifacts/**/*
+          files: dist_electron/**/*
           body: |
             ## What's Changed
             ${{ steps.changelog.outputs.changes }}
