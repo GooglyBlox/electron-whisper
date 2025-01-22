@@ -1,6 +1,6 @@
 {
   "name": "transcriber-app",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "author": "GooglyBlox",
   "description": "Audio/Video Transcription Application",
   "main": "dist-electron/main/main.cjs",
