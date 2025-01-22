@@ -15,9 +15,14 @@ extraResources:
     to: resources
     filter:
       - "**/*"
+  - from: resources/bin
+    to: bin
+    filter:
+      - '**/*'
 asarUnpack:
   - "node_modules/@ffmpeg-installer/ffmpeg" 
   - "node_modules/youtube-dl-exec/**/*"
+  - "resources/bin"
 win:
   target: nsis
   icon: build/icon.ico

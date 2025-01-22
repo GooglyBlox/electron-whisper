@@ -34,10 +34,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_FOR_YTDLP }}
-          GH_TOKEN: ${{ secrets.PAT_FOR_YTDLP }}
-          GITHUB_API_TOKEN: ${{ secrets.PAT_FOR_YTDLP }}
-        
+          YOUTUBE_DL_SKIP_DOWNLOAD: "true"
 
       - name: Build
         env:

@@ -3,22 +3,19 @@ const fs = require("fs");
 const { app, dialog } = require("electron");
 const { create } = require("youtube-dl-exec");
 
-const getBinaryName = () => {
-  switch (process.platform) {
-    case 'win32':
-      return 'yt-dlp.exe';
-    case 'darwin':
-      return 'yt-dlp_darwin';
-    default:
-      return 'yt-dlp';
-  }
-};
+function getBinaryName() {
+  if (process.platform === 'win32') return 'yt-dlp.exe';
+  if (process.platform === 'darwin') return 'yt-dlp';
+  return 'yt-dlp';
+}
 
-let unpackedBinaryPath = require.resolve(`youtube-dl-exec/bin/${getBinaryName()}`);
+const binaryPath = path.join(
+  process.resourcesPath,
+  'bin',
+  getBinaryName()
+);
 
-unpackedBinaryPath = unpackedBinaryPath.replace("app.asar", "app.asar.unpacked");
-
-const ytdlp = create(unpackedBinaryPath);
+const ytdlp = create(binaryPath);
 
 function registerYoutubeHandlers(ipcMain) {
   ipcMain.handle("download-youtube", async (_event, url) => {
