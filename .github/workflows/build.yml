@@ -15,41 +15,76 @@ jobs:
         os: [windows-latest, ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.8"
+      
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
+      
       - name: Install dependencies
         run: npm ci
         env:
           YOUTUBE_DL_SKIP_DOWNLOAD: "true"
+      
       - name: Build
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npm run build
+      
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: dist-${{ matrix.os }}
-          path: dist
+          path: dist_electron/**
 
   release:
     permissions:
       contents: write
-
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Download artifacts
+        with:
+          fetch-depth: 0
+      
+      - name: Download all artifacts
         uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+      
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "changes=Initial Release" >> $GITHUB_OUTPUT
+          else
+            echo "changes<<EOF" >> $GITHUB_OUTPUT
+            git log --pretty=format:"* %s" $PREVIOUS_TAG..HEAD >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+      
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist_electron/**
+          draft: false
+          prerelease: false
+          files: artifacts/**/*
+          body: |
+            ## What's Changed
+            ${{ steps.changelog.outputs.changes }}
+            
+            ## Installation
+            Download the appropriate file for your operating system:
+            - Windows: `.exe` file
+            - macOS: `.dmg` file
+            - Linux: `.AppImage` file
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
