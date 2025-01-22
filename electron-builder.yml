@@ -1,5 +1,5 @@
 appId: com.googlyblox.transcriber
-productName: Transcriber App
+productName: "TranscriberApp"
 directories:
   buildResources: build
   output: dist_electron
@@ -14,12 +14,28 @@ extraResources:
     to: resources
     filter:
       - "**/*"
+asarUnpack:
+  - "node_modules/@ffmpeg-installer/ffmpeg" 
+  - "node_modules/youtube-dl-exec**"
 win:
   target: nsis
   icon: build/icon.ico
 mac:
-  target: dmg
+  target: 
+    - target: dmg
+      arch: 
+        - x64
+        - arm64
   icon: build/icon.icns
+  darkModeSupport: true
+  category: public.app-category.utilities
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  artifactName: "${productName}-${version}-${arch}.${ext}"
+  electronLanguages: ["en"]
+  minimumSystemVersion: "10.13.0"
 linux:
   target: AppImage
   icon: build/icon.png

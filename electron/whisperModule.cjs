@@ -1,10 +1,11 @@
 const ffmpeg = require("fluent-ffmpeg")
-const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg")
+const { path: ffmpegInstallerPath } = require("@ffmpeg-installer/ffmpeg");
 const fs = require("fs")
 const path = require("path")
 const { app } = require("electron")
 
-ffmpeg.setFfmpegPath(ffmpegInstaller.path)
+const ffmpegPath = ffmpegInstallerPath.replace("app.asar", "app.asar.unpacked");
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 function bufferToFloat32Array(buffer) {
   const pcm16 = new Int16Array(buffer.buffer, buffer.byteOffset, buffer.length / 2)
@@ -103,12 +104,20 @@ function registerWhisperHandlers(ipcMain) {
         throw new Error("No transcription result generated")
       }
 
-      const outputDir = path.dirname(filePath)
       const baseName = path.basename(filePath, path.extname(filePath))
-
+      const outputDir = options.outputDirectory || path.dirname(filePath)
+      
+      console.log('Transcription output details:');
+      console.log('Input file path:', filePath);
+      console.log('Base name:', baseName);
+      console.log('Output directory from options:', options.outputDirectory);
+      console.log('Final output directory:', outputDir);
+      
       event.sender.send("progress", "Writing output files...")
+      const outputPath = path.join(outputDir, `${baseName}.txt`);
+      console.log('Final output path:', outputPath);
       await fs.promises.writeFile(
-        path.join(outputDir, `${baseName}.txt`),
+        outputPath,
         result.text,
         "utf-8"
       )

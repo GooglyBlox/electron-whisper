@@ -10,14 +10,16 @@ export const useStore = create(
         task: "transcribe",
         device: "cpu",
         addSubtitles: false,
+        outputDirectory: null,
       },
-      outputDirectory: null,
       updateSettings: (newSettings) =>
         set((state) => ({
           settings: { ...state.settings, ...newSettings },
         })),
       setOutputDirectory: (directory) =>
-        set({ outputDirectory: directory }),
+        set((state) => ({
+          settings: { ...state.settings, outputDirectory: directory }
+        })),
     }),
     {
       name: "transcription-settings",

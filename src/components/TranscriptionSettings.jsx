@@ -28,7 +28,6 @@ export const TranscriptionSettings = () => {
             onChange={(e) => updateSettings({ language: e.target.value })}
             className="input-field"
           >
-            <option value="auto">Auto-detect</option>
             <option value="en">English</option>
             <option value="es">Spanish</option>
             <option value="fr">French</option>

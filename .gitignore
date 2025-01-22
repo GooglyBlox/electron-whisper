@@ -3,4 +3,4 @@ dist-electron
 dist_electron
 dist
 /resources
-.txt
+*.txt

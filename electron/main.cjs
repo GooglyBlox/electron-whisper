@@ -22,7 +22,11 @@ function createWindow() {
     mainWindow.loadURL("http://localhost:5173")
     mainWindow.webContents.openDevTools()
   } else {
-    mainWindow.loadFile(path.join(__dirname, "../dist/index.html"))
+    const indexPath = path.join(__dirname, "../../dist/index.html")
+    mainWindow.loadFile(indexPath).catch((error) => {
+      console.error("Failed to load index.html:", error)
+      console.error("Attempted path:", indexPath)
+    })
   }
 
   mainWindow.webContents.on("did-fail-load", (_, errorCode, errorDescription) => {

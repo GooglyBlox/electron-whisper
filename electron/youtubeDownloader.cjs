@@ -1,7 +1,24 @@
 const path = require("path");
 const fs = require("fs");
 const { app, dialog } = require("electron");
-const youtubedl = require("youtube-dl-exec");
+const { create } = require("youtube-dl-exec");
+
+const getBinaryName = () => {
+  switch (process.platform) {
+    case 'win32':
+      return 'yt-dlp.exe';
+    case 'darwin':
+      return 'yt-dlp_darwin';
+    default:
+      return 'yt-dlp';
+  }
+};
+
+let unpackedBinaryPath = require.resolve(`youtube-dl-exec/bin/${getBinaryName()}`);
+
+unpackedBinaryPath = unpackedBinaryPath.replace("app.asar", "app.asar.unpacked");
+
+const ytdlp = create(unpackedBinaryPath);
 
 function registerYoutubeHandlers(ipcMain) {
   ipcMain.handle("download-youtube", async (_event, url) => {
@@ -23,9 +40,7 @@ function registerYoutubeHandlers(ipcMain) {
   });
 
   ipcMain.handle("select-directory", async () => {
-    const result = await dialog.showOpenDialog({
-      properties: ["openDirectory"],
-    });
+    const result = await dialog.showOpenDialog({ properties: ["openDirectory"] });
     if (!result.canceled) {
       return result.filePaths[0];
     }
@@ -35,20 +50,17 @@ function registerYoutubeHandlers(ipcMain) {
 
 function downloadWithYtDlp(_event, url, outputPath) {
   return new Promise((resolve, reject) => {
-    const subprocess = youtubedl.exec(
-      url,
-      {
-        format: "bestaudio", 
-        output: outputPath,
-      },
-      {}
-    );
+    console.log('YouTube download starting. Output path:', outputPath);
+    const subprocess = ytdlp.exec(url, { format: "bestaudio", output: outputPath }, {});
 
     subprocess.stdout.on("data", (data) => {
       const line = data.toString();
       const match = line.match(/\[download\]\s+([\d.]+)%/);
       if (match) {
-        _event.sender.send("progress", `Downloading: ${parseFloat(match[1]).toFixed(1)}%`);
+        _event.sender.send(
+          "progress",
+          `Downloading: ${parseFloat(match[1]).toFixed(1)}%`
+        );
       }
     });
 
@@ -58,6 +70,7 @@ function downloadWithYtDlp(_event, url, outputPath) {
 
     subprocess.on("close", (code) => {
       if (code === 0) {
+        console.log('YouTube download complete. Final path:', outputPath);
         resolve(outputPath);
       } else {
         reject(new Error(`yt-dlp exited with code ${code}`));
