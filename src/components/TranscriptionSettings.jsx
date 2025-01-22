@@ -5,11 +5,13 @@ export const TranscriptionSettings = () => {
   const { settings, updateSettings } = useStore();
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 mt-8">
-      <h2 className="text-lg font-medium mb-4">Transcription Settings</h2>
+    <div className="card mt-8">
+      <h2 className="text-lg font-semibold mb-4">Transcription Settings</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium mb-1">Model Size</label>
+          <label className="block text-sm font-medium text-gray-300 mb-2">
+            Model Size
+          </label>
           <select
             value={settings.modelSize}
             onChange={(e) => updateSettings({ modelSize: e.target.value })}
@@ -22,7 +24,9 @@ export const TranscriptionSettings = () => {
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Language</label>
+          <label className="block text-sm font-medium text-gray-300 mb-2">
+            Language
+          </label>
           <select
             value={settings.language}
             onChange={(e) => updateSettings({ language: e.target.value })}
@@ -34,7 +38,9 @@ export const TranscriptionSettings = () => {
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Task</label>
+          <label className="block text-sm font-medium text-gray-300 mb-2">
+            Task
+          </label>
           <select
             value={settings.task}
             onChange={(e) => updateSettings({ task: e.target.value })}
@@ -45,7 +51,9 @@ export const TranscriptionSettings = () => {
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Device</label>
+          <label className="block text-sm font-medium text-gray-300 mb-2">
+            Device
+          </label>
           <select
             value={settings.device}
             onChange={(e) => updateSettings({ device: e.target.value })}
@@ -56,15 +64,16 @@ export const TranscriptionSettings = () => {
           </select>
         </div>
       </div>
-      <div className="mt-4">
-        <label className="flex items-center space-x-2">
+      <div className="mt-6">
+        <label className="flex items-center space-x-2 cursor-pointer">
           <input
             type="checkbox"
             checked={settings.addSubtitles}
             onChange={(e) => updateSettings({ addSubtitles: e.target.checked })}
-            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            className="rounded border-gray-600 bg-gray-700 text-blue-500 
+                     focus:ring-blue-500 focus:ring-offset-gray-900"
           />
-          <span>Generate Subtitles</span>
+          <span className="text-gray-300">Generate Subtitles</span>
         </label>
       </div>
     </div>

@@ -10,13 +10,14 @@ export const ConsoleOutput = ({ text }) => {
   }, [text])
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 mt-8">
-      <h2 className="text-lg font-medium mb-4">Console Output</h2>
+    <div className="card mt-8">
+      <h2 className="text-lg font-semibold mb-4">Console Output</h2>
       <pre
         ref={outputRef}
-        className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg h-64 overflow-auto font-mono text-sm text-gray-800 dark:text-gray-200"
+        className="bg-gray-900 p-4 rounded-lg h-64 overflow-auto font-mono 
+                   text-sm text-gray-300 border border-gray-700"
       >
-        {text || "No output yet..."}
+        {text || "Waiting for input..."}
       </pre>
     </div>
   )

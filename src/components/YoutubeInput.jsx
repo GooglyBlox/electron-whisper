@@ -25,26 +25,39 @@ export const YoutubeInput = ({ onUrlSubmit }) => {
   }, [])
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-      <h2 className="text-lg font-medium mb-4">YouTube Download</h2>
+    <div className="card">
+      <h2 className="text-lg font-semibold mb-4">YouTube Download</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder="Enter YouTube URL"
-          className="input-field"
-        />
+        <div className="flex gap-3">
+          <input
+            type="text"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Enter YouTube URL"
+            className="input-field flex-1"
+          />
+          <button 
+            type="submit" 
+            className="btn-primary whitespace-nowrap"
+          >
+            Add URL
+          </button>
+        </div>
+        
         <div className="space-y-2">
           {urls.map((url, index) => (
             <div
               key={index}
-              className="flex items-center justify-between bg-gray-50 dark:bg-gray-700 p-2 rounded"
+              className="flex items-center justify-between bg-gray-900/50 
+                         p-3 rounded-lg border border-gray-700"
             >
-              <span className="truncate flex-1">{url}</span>
+              <span className="truncate flex-1 text-gray-300 text-sm">{url}</span>
               <button
                 onClick={() => removeUrl(index)}
-                className="ml-2 text-red-600 hover:text-red-800 dark:text-red-400"
+                className="ml-2 text-gray-400 hover:text-red-400 
+                         transition-colors p-1 rounded-lg 
+                         hover:bg-gray-800"
+                type="button"
               >
                 <svg
                   className="w-5 h-5"
@@ -69,7 +82,7 @@ export const YoutubeInput = ({ onUrlSubmit }) => {
             onClick={handleProcess}
             className="btn-primary w-full"
           >
-            Process URLs
+            Process {urls.length} URL{urls.length !== 1 ? 's' : ''}
           </button>
         )}
       </form>

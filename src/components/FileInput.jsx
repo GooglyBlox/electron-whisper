@@ -37,10 +37,12 @@ export const FileInput = ({ onFilesSelected }) => {
   );
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-6">
-      <h2 className="text-lg font-medium mb-4">Local Files</h2>
+    <div className="card">
+      <h2 className="text-lg font-semibold mb-4">Local Files</h2>
       <div
-        className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center"
+        className="border-2 border-dashed border-gray-600 hover:border-gray-500 
+                   rounded-lg p-8 text-center transition-colors cursor-pointer
+                   bg-gray-900/50"
         onDrop={handleDrop}
         onDragOver={handleDragOver}
       >
@@ -54,11 +56,11 @@ export const FileInput = ({ onFilesSelected }) => {
         />
         <label
           htmlFor="fileInput"
-          className="cursor-pointer text-gray-600 dark:text-gray-400"
+          className="cursor-pointer text-gray-400 hover:text-gray-300 transition-colors"
         >
           <div className="flex flex-col items-center">
             <svg
-              className="w-8 h-8 mb-2"
+              className="w-10 h-10 mb-3 text-gray-500"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -70,7 +72,10 @@ export const FileInput = ({ onFilesSelected }) => {
                 d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
               />
             </svg>
-            <span>Drop files here or click to select</span>
+            <span className="text-sm">Drop files here or click to select</span>
+            <span className="text-xs text-gray-500 mt-1">
+              Supports audio and video files
+            </span>
           </div>
         </label>
       </div>

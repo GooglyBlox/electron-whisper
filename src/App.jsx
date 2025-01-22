@@ -30,16 +30,18 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-900">
       <Header />
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <main className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <FileInput onFilesSelected={handleFiles} />
           <YoutubeInput onUrlSubmit={handleYoutubeUrl} />
         </div>
-        <TranscriptionSettings />
-        <OutputSection />
-        <ConsoleOutput text={progress} />
+        <div className="mt-6 space-y-6">
+          <TranscriptionSettings />
+          <OutputSection />
+          <ConsoleOutput text={progress} />
+        </div>
       </main>
     </div>
   );
