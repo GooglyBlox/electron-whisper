@@ -3,18 +3,18 @@ const fs = require("fs");
 const { app, dialog } = require("electron");
 const { create } = require("youtube-dl-exec");
 
-function getBinaryName() {
-  if (process.platform === 'win32') return 'yt-dlp.exe';
-  if (process.platform === 'darwin') return 'yt-dlp';
-  return 'yt-dlp';
+function getBinaryPath() {
+  const platform = process.platform;
+  if (platform === 'win32') {
+    return path.join(process.resourcesPath, 'bin', 'win', 'yt-dlp.exe');
+  } else if (platform === 'darwin') {
+    return path.join(process.resourcesPath, 'bin', 'mac', 'yt-dlp_macos');
+  } else {
+    return path.join(process.resourcesPath, 'bin', 'linux', 'yt-dlp_linux');
+  }
 }
 
-const binaryPath = path.join(
-  process.resourcesPath,
-  'bin',
-  getBinaryName()
-);
-
+const binaryPath = getBinaryPath();
 const ytdlp = create(binaryPath);
 
 function registerYoutubeHandlers(ipcMain) {
