@@ -1,11 +1,19 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useRef } from "react";
 
-export const FileInput = ({ onFilesSelected }) => {
+export const FileInput = ({ onFilesSelected, queuedFiles, onRemoveFile, onProcessFiles }) => {
+  const fileInputRef = useRef(null);
+
   const handleFiles = useCallback(
     async (files) => {
       try {
-        const fileArray = Array.from(files);
+        const fileArray = Array.from(files).map(file => ({
+          path: file.path,
+          name: file.name
+        }));
         onFilesSelected(fileArray);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
       } catch (error) {
         console.error("Error handling files:", error);
       }
@@ -47,6 +55,7 @@ export const FileInput = ({ onFilesSelected }) => {
         onDragOver={handleDragOver}
       >
         <input
+          ref={fileInputRef}
           type="file"
           onChange={handleFileInput}
           className="hidden"
@@ -79,6 +88,48 @@ export const FileInput = ({ onFilesSelected }) => {
           </div>
         </label>
       </div>
+      {queuedFiles.length > 0 && (
+        <div className="mt-4 space-y-2">
+          {queuedFiles.map((file, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between bg-gray-900/50 
+                         p-3 rounded-lg border border-gray-700"
+            >
+              <span className="truncate flex-1 text-gray-300 text-sm">
+                {file.name}
+              </span>
+              <button
+                onClick={() => onRemoveFile(index)}
+                className="ml-2 text-gray-400 hover:text-red-400 
+                         transition-colors p-1 rounded-lg 
+                         hover:bg-gray-800"
+                type="button"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={onProcessFiles}
+            className="btn-primary w-full mt-4"
+          >
+            Process {queuedFiles.length} File{queuedFiles.length !== 1 ? 's' : ''}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
