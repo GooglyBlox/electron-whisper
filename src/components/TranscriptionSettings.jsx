@@ -20,7 +20,6 @@ export const TranscriptionSettings = () => {
             <option value="base">Base</option>
             <option value="small">Small</option>
             <option value="medium">Medium</option>
-            <option value="large-v3-turbo">Large</option>
           </select>
         </div>
         <div>
