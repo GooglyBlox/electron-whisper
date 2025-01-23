@@ -8,8 +8,7 @@ let mainWindow = null
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    show: false,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -17,6 +16,9 @@ function createWindow() {
       sandbox: false
     }
   })
+
+  mainWindow.maximize()
+  mainWindow.show()
 
   if (isDev) {
     mainWindow.loadURL("http://localhost:5173")

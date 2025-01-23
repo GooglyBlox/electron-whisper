@@ -9,13 +9,13 @@ import { useTranscription } from "./hooks/useTranscription";
 import { useYoutubeDownload } from "./hooks/useYoutubeDownload";
 
 const App = () => {
-  const { transcribe, progress } = useTranscription();
+  const { transcribe, progress, isProcessing, queueLength } = useTranscription();
   const { downloadVideo } = useYoutubeDownload();
 
-  const handleFiles = async (files) => {
+  const handleFiles = (files) => {
     for (const file of files) {
       if (file.path) {
-        await transcribe(file.path);
+        transcribe(file.path);
       } else {
         console.error("File path not available:", file);
       }
@@ -25,7 +25,7 @@ const App = () => {
   const handleYoutubeUrl = async (url) => {
     const filePath = await downloadVideo(url);
     if (filePath) {
-      await transcribe(filePath);
+      transcribe(filePath);
     }
   };
 
@@ -40,7 +40,11 @@ const App = () => {
         <div className="mt-6 space-y-6">
           <TranscriptionSettings />
           <OutputSection />
-          <ConsoleOutput text={progress} />
+          <ConsoleOutput 
+            text={progress}
+            isProcessing={isProcessing}
+            queueLength={queueLength}
+          />
         </div>
       </main>
     </div>
