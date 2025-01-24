@@ -1,8 +1,31 @@
 import React from "react";
 import { useStore } from "../store";
+import Dropdown from "./Dropdown";
 
 export const TranscriptionSettings = () => {
   const { settings, updateSettings } = useStore();
+
+  const modelSizeOptions = [
+    { value: "base", label: "Base" },
+    { value: "small", label: "Small" },
+    { value: "medium", label: "Medium" },
+  ];
+
+  const languageOptions = [
+    { value: "en", label: "English" },
+    { value: "es", label: "Spanish" },
+    { value: "fr", label: "French" },
+  ];
+
+  const taskOptions = [
+    { value: "transcribe", label: "Transcribe" },
+    { value: "translate", label: "Translate" },
+  ];
+
+  const deviceOptions = [
+    { value: "cpu", label: "CPU" },
+    { value: "cuda", label: "GPU (CUDA)" },
+  ];
 
   return (
     <div className="card mt-8">
@@ -12,55 +35,45 @@ export const TranscriptionSettings = () => {
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Model Size
           </label>
-          <select
+          <Dropdown
+            options={modelSizeOptions}
             value={settings.modelSize}
-            onChange={(e) => updateSettings({ modelSize: e.target.value })}
-            className="input-field"
-          >
-            <option value="base">Base</option>
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-          </select>
+            onChange={(value) => updateSettings({ modelSize: value })}
+            placeholder="Select model size"
+          />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Language
           </label>
-          <select
+          <Dropdown
+            options={languageOptions}
             value={settings.language}
-            onChange={(e) => updateSettings({ language: e.target.value })}
-            className="input-field"
-          >
-            <option value="en">English</option>
-            <option value="es">Spanish</option>
-            <option value="fr">French</option>
-          </select>
+            onChange={(value) => updateSettings({ language: value })}
+            placeholder="Select language"
+          />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Task
           </label>
-          <select
+          <Dropdown
+            options={taskOptions}
             value={settings.task}
-            onChange={(e) => updateSettings({ task: e.target.value })}
-            className="input-field"
-          >
-            <option value="transcribe">Transcribe</option>
-            <option value="translate">Translate</option>
-          </select>
+            onChange={(value) => updateSettings({ task: value })}
+            placeholder="Select task"
+          />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Device
           </label>
-          <select
+          <Dropdown
+            options={deviceOptions}
             value={settings.device}
-            onChange={(e) => updateSettings({ device: e.target.value })}
-            className="input-field"
-          >
-            <option value="cpu">CPU</option>
-            <option value="cuda">GPU (CUDA)</option>
-          </select>
+            onChange={(value) => updateSettings({ device: value })}
+            placeholder="Select device"
+          />
         </div>
       </div>
       <div className="mt-6">
