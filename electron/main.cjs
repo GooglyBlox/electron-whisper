@@ -1,10 +1,10 @@
-const { app, BrowserWindow, ipcMain } = require("electron")
-const path = require("path")
-const { registerWhisperHandlers } = require("./whisperModule.cjs")
-const { registerYoutubeHandlers } = require("./youtubeDownloader.cjs")
+const { app, BrowserWindow, ipcMain } = require("electron");
+const path = require("path");
+const { registerWhisperHandlers } = require("./whisperModule.cjs");
+const { registerYoutubeHandlers } = require("./youtubeDownloader.cjs");
 
-const isDev = process.env.NODE_ENV === "development"
-let mainWindow = null
+const isDev = process.env.NODE_ENV === "development";
+let mainWindow = null;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -13,43 +13,46 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.join(__dirname, "./preload.cjs"),
-      sandbox: false
-    }
-  })
+      sandbox: false,
+    },
+  });
 
-  mainWindow.maximize()
-  mainWindow.show()
+  mainWindow.maximize();
+  mainWindow.show();
 
   if (isDev) {
-    mainWindow.loadURL("http://localhost:5173")
-    mainWindow.webContents.openDevTools()
+    mainWindow.loadURL("http://localhost:5173");
+    mainWindow.webContents.openDevTools();
   } else {
-    const indexPath = path.join(__dirname, "../../dist/index.html")
+    const indexPath = path.join(__dirname, "../../dist/index.html");
     mainWindow.loadFile(indexPath).catch((error) => {
-      console.error("Failed to load index.html:", error)
-      console.error("Attempted path:", indexPath)
-    })
+      console.error("Failed to load index.html:", error);
+      console.error("Attempted path:", indexPath);
+    });
   }
 
-  mainWindow.webContents.on("did-fail-load", (_, errorCode, errorDescription) => {
-    console.error("Failed to load:", errorCode, errorDescription)
-  })
+  mainWindow.webContents.on(
+    "did-fail-load",
+    (_, errorCode, errorDescription) => {
+      console.error("Failed to load:", errorCode, errorDescription);
+    }
+  );
 }
 
 app.whenReady().then(() => {
-  createWindow()
-  registerWhisperHandlers(ipcMain)
-  registerYoutubeHandlers(ipcMain)
+  createWindow();
+  registerWhisperHandlers(ipcMain);
+  registerYoutubeHandlers(ipcMain);
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
+      createWindow();
     }
-  })
-})
+  });
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
-    app.quit()
+    app.quit();
   }
-})
+});
