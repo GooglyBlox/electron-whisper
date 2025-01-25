@@ -12,7 +12,7 @@ async function getBinaryPath() {
   if (platform === "win32") {
     binaryPath = path.join(process.resourcesPath, "bin", "win", "yt-dlp.exe");
   } else if (platform === "darwin") {
-    binaryPath = path.join(process.resourcesPath, "bin", "mac", "yt-dlp_macos");
+    binaryPath = path.join(process.resourcesPath, "resources", "bin", "mac", "yt-dlp_macos");
     try {
       await chmod(binaryPath, "755");
     } catch (error) {
